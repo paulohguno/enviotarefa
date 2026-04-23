@@ -3,7 +3,7 @@
 import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 import Image from "next/image";
 import { useState } from "react";
-import img from '../public/next.svg'
+import img from '../../public/next.svg'
 
 export default function Home() {
 const [dados, setDados] = useState('opa');

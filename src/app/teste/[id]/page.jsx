@@ -1,12 +1,11 @@
 'use client'
 import { useParams, useSearchParams } from "next/navigation";
 import Link from 'next/link'
+import { Suspense } from 'react';
 
-
-export default function TestePage() {
+function TesteContent() {
     const parametros = useParams();
     const parametrosQuery = useSearchParams();
-
 
     return (
         <div className="flex justify-center">
@@ -17,5 +16,13 @@ export default function TestePage() {
                 {parametros.id} - {parametrosQuery.get('nome')}
             </h1>
         </div>
-    )
+    );
+}
+
+export default function TestePage() {
+    return (
+        <Suspense fallback={<div>Carregando...</div>}>
+            <TesteContent />
+        </Suspense>
+    );
 }

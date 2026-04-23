@@ -2,11 +2,13 @@
 import { FaRegClock } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { GiConfirmed } from "react-icons/gi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import BlogHeader from "@/components/ui/navbar";
 import Modal from "@/components/ui/modal";
 import Moedit from "@/components/ui/modaledit";
+import api from "../utils/axios";
+
 
 export default function Tarefa() {
     const [open, setOpen] = useState(null); 
@@ -51,6 +53,17 @@ export default function Tarefa() {
         acoesmostrar : true,
         nomemostrar : true,
     }
+
+    
+async function getTarefas() {
+    try {
+        const dados = await api.get('/tarefas/getall');
+        console.log(dados);
+    }catch (error) {
+        console.error("Erro ao buscar tarefas:", error);
+    }
+}
+useEffect(() => {getTarefas()}, []);
 
     //comandos de front 
     //fixed para deixar modal fixo na tela
