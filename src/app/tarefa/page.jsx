@@ -13,17 +13,20 @@ import api from "../utils/axios";
 export default function Tarefa() {
     const [open, setOpen] = useState(null); 
     const [tarefaSelecionada, setTarefaSelecionada] = useState(null);
+
     const [Inserts, setInserts] = useState([
-        { nome: "passear com dog", descricao: "levar o bilu para passear", prazo: "10 horas", status: "1" },
-        { nome: "comprar food", descricao: "comprar arroz, feijão e carne", prazo: "1 dia", status: "0" },
-        { nome: "fazer exercícios", descricao: "fazer 30 minutos de exercícios", prazo: "1 hora", status: "0" },
-        { nome: "ler um livro", descricao: "ler o livro 'o senhor dos anéis'", prazo: "1 semana", status: "0" },
-        { nome: "assistir a um filme", descricao: "assistir ao filme 'o poderoso chefão'", prazo: "1 dia", status: "0" },
-        { nome: "estudar programação", descricao: "estudar JavaScript e React", prazo: "2 dias", status: "0" },
-        { nome: "limpar a casa", descricao: "varrer, passar pano e organizar os cômodos", prazo: "1 dia", status: "0" },
-        { nome: "cozinhar o jantar", descricao: "preparar uma refeição saudável", prazo: "3 horas", status: "0" },
-        { nome: "fazer compras", descricao: "ir ao supermercado para comprar mantimentos", prazo: "1 dia", status: "0" },
-        { nome: "escrever um diário", descricao: "registrar os acontecimentos do dia em um diário", prazo: "1 hora", status: "0" },
+        {
+            nome: "Tarefa 1",
+            descricao: "Descrição da tarefa 1",
+            prazo: "2023-12-31",
+            status: "0"
+        },
+        {
+            nome: "Tarefa 2",
+            descricao: "Descrição da tarefa 2",
+            prazo: "2023-11-30",
+            status: "1"
+        }
     ]);
 
     let [pagina, setPagina] = useState(5);
@@ -54,16 +57,32 @@ export default function Tarefa() {
         nomemostrar : true,
     }
 
-    
-async function getTarefas() {
+    //use effect para buscar as tarefas da api quando o componente for montado
+useEffect(() => {
+    async function getTarefas() {
     try {
-        const dados = await api.get('/tarefas/getall');
-        console.log(dados);
+        const dados = await api.get('/tarefa/get-all');
+        const tarefasApi = Array.isArray(dados?.data) ? dados.data : [];
+        const tarefasFormatadas = tarefasApi.map((tarefa) => ({
+            id: tarefa.id,
+            nome: `Tarefa #${tarefa.id}`,
+            descricao: tarefa.descricao || "Sem descricao",
+            prazo: "-",
+            status: tarefa.finalizado ? "1" : "0",
+        }));
+
+        setInserts(tarefasFormatadas);
     }catch (error) {
+        
         console.error("Erro ao buscar tarefas:", error);
     }
 }
-useEffect(() => {getTarefas()}, []);
+    
+    
+getTarefas();
+}, []);
+
+
 
     //comandos de front 
     //fixed para deixar modal fixo na tela
@@ -148,7 +167,9 @@ useEffect(() => {getTarefas()}, []);
                                     {controlemostra.nomemostrar && (
                                         
                                     <div>
-                                            <p className="text-sm">{insert.nome}</p>
+                                        <p className="text-sm text-[#52F2ED]">{insert.nome}</p>
+                                        
+                                        
                                         </div>
                                     )}
 
@@ -225,3 +246,30 @@ useEffect(() => {getTarefas()}, []);
         </div>
     );
 }
+
+
+
+
+
+
+
+
+
+{/*const tarefasFiltradas = useMemo(() => {
+      const termo = busca.toLowerCase()
+      return dados.filter((row) =>
+      Object.values(row).some((value) => {
+        if (typeof value === "string") {
+          return value.toLowerCase().includes(termo);
+        }
+        if (
+          typeof value === "number" ||
+          typeof value === "boolean" ||
+          value instanceof Date
+        ) {
+          return (String(value).toLowerCase()).includes(termo);
+        }
+        return false;
+      })
+    );
+    }, [dados, busca])*/}
