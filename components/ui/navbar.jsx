@@ -91,7 +91,6 @@ const BlogHeader = () => {
         </div>
       </header>
 
-      {/* OVERLAY */}
       <div
         className={`fixed inset-0 z-40 bg-black/60 transition ${
           isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
