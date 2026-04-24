@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-
 //comandos de front 
     //fixed para deixar modal fixo na tela
     //inset-0 para ocupar toda a tela
@@ -34,6 +33,10 @@ import { useState } from "react";
     //shadow-[0_0_25px_rgba(12,175,240,0.15)] para uma sombra personalizada
     //grid e grid-cols-5 para organizar os elementos em uma grade de 5 colunas
 
+
+
+
+
 export default function Modal({ isOpen, onClose, onSave }) {
     const [form, setForm] = useState({
         nome: "",
@@ -47,10 +50,8 @@ export default function Modal({ isOpen, onClose, onSave }) {
         setForm({ ...form, [campo]: valor });
     };
 
-    const salvar = () => {
-        onSave({ ...form, status: "0" });
-        setForm({ nome: "", descricao: "", prazo: "" });
-        onClose();
+    const handleSubmit = () => {
+        onSave(form);
     };
 
     return (
@@ -80,8 +81,9 @@ export default function Modal({ isOpen, onClose, onSave }) {
                         />
                     </div>
                 <button
-                    onClick={salvar}
+                    onClick={handleSubmit}
                     className="mt-2 w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded font-bold"
+                    
                 >
                     Salvar
                 </button>

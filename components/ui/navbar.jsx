@@ -18,7 +18,7 @@ const BlogHeader = () => {
   return (
     <>
       {/* HEADER */}
-      <header className="sticky top-0 z-50 w-full bg-[#020617]/80 backdrop-blur-md border-b border-[#0CAFF0]/20 shadow-[0_0_20px_rgba(12,175,240,0.1)]">
+      <header className="fixed top-0 left-0 z-50 w-full bg-[#020617]/80 backdrop-blur-md border-b border-[#0CAFF0]/20 shadow-[0_0_20px_rgba(12,175,240,0.1)]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
 

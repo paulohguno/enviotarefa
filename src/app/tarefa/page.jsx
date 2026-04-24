@@ -4,10 +4,10 @@ import { CiEdit } from "react-icons/ci";
 import { GiConfirmed } from "react-icons/gi";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import BlogHeader from "@/components/ui/navbar";
 import Modal from "@/components/ui/modal";
 import Moedit from "@/components/ui/modaledit";
 import api from "../utils/axios";
+import { toast } from "react-toastify";
 
 
 export default function Tarefa() {
@@ -37,9 +37,33 @@ export default function Tarefa() {
         item.descricao.toLowerCase().includes(busca.toLowerCase())
     );
 
-    const handleSave = (novaTarefa) => {
-        setInserts([novaTarefa, ...Inserts]);
-        setOpen(null);
+    const getTarefas = async () => {
+        try {
+            const dados = await api.get('/tarefa/get-all');
+            const tarefasApi = Array.isArray(dados?.data) ? dados.data : [];
+            const tarefasFormatadas = tarefasApi.map((tarefa) => ({
+                id: tarefa.id,
+                nome: `Tarefa #${tarefa.id}`,
+                descricao: tarefa.descricao || "Sem descricao",
+                prazo: "-",
+                status: tarefa.finalizado ? "1" : "0",
+            }));
+
+            setInserts(tarefasFormatadas);
+        } catch (error) {
+            console.error("Erro ao buscar tarefas:", error);
+        }
+    };
+
+    const salvarTarefa = async (dados) => {
+        try {
+            await api.post("/tarefa/create", dados);
+            await getTarefas();
+            toast.success("Tarefa salva com sucesso");
+            setOpen(null);
+        } catch (error) {
+            toast.error("Falha ao salvar tarefa");
+        }
     };
 
     const handleUpdate = (tarefaEditada) => {
@@ -58,34 +82,18 @@ export default function Tarefa() {
     }
 
     //use effect para buscar as tarefas da api quando o componente for montado
-useEffect(() => {
-    async function getTarefas() {
-    try {
-        const dados = await api.get('/tarefa/get-all');
-        const tarefasApi = Array.isArray(dados?.data) ? dados.data : [];
-        const tarefasFormatadas = tarefasApi.map((tarefa) => ({
-            id: tarefa.id,
-            nome: `Tarefa #${tarefa.id}`,
-            descricao: tarefa.descricao || "Sem descricao",
-            prazo: "-",
-            status: tarefa.finalizado ? "1" : "0",
-        }));
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            getTarefas();
+        }, 0);
 
-        setInserts(tarefasFormatadas);
-    }catch (error) {
-        
-        console.error("Erro ao buscar tarefas:", error);
-    }
-}
-    
-    
-getTarefas();
-}, []);
+        return () => clearTimeout(timer);
+    }, []);
 
 
 
     //comandos de front 
-    //fixed para deixar modal fixo na tela
+    //fixed para deixar modal fixo na telapm =
     //inset-0 para ocupar toda a tela
     //z-50 para ficar acima de outros elementos
     //flex, items-center e justify-center para centralizar o modal
@@ -120,7 +128,6 @@ getTarefas();
     return (
         <div className="min-h-screen flex flex-col bg-[#020617] text-white font-sans">
 
-            <BlogHeader />
             <div className="flex-1 min-h-0 px-2 py-2 sm:px-6 lg:px-8 flex items-center justify-center border-b border-[#0CAFF0]/20">
                 
             <div className="w-full max-w-5xl rounded-2xl border border-[#0CAFF0]/30 bg-[#020617]/80 p-6 backdrop-blur-md shadow-[0_0_25px_rgba(12,175,240,0.15)]">
@@ -142,11 +149,12 @@ getTarefas();
                             Nova Tarefa
                         </button>
 
-                            <Modal 
-                            isOpen={open === "novo"} 
-                            onClose={() => setOpen(null)} 
-                            onSave={handleSave} 
-                    />
+                                <Modal 
+                                isOpen={open === "novo"}
+                                onSave={salvarTarefa}
+                                onClose={() => setOpen(null)}
+                            />
+                            
                     </div>
 
                     <div className="grid grid-cols-5 px-2 py-2 text-sm text-[#52F2ED] border-b border-[#0CAFF0]/20 mb-2">
