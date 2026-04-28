@@ -6,6 +6,16 @@
 
 @theme {
   --color-botao-confirmar: #db0000;
+  --color-texto-logos : #db0000;
+  --color-texto-pequeno : #564d4d;
+  --color-botao-informacao : #564d4d;
+  --color-botao-regreso: #831010;
+  --color-texto-regreso: #831010;
+  --color-texto-escuro: 	#000000;
+  --color-botao-escuro: 	#000000;
+  --color-texto-branco: #ffffff;
+  --color-botao-branco: #ffffff;
+  --color-fundo-telas: #2b0b0b;
 }
 
 @layer base {

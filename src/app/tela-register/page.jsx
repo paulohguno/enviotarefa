@@ -9,11 +9,11 @@ export default function LoginPage() {
             <div 
                 className="absolute inset-0 z-0"
                 style={{
-                    background: 'radial-gradient(circle at 50% 40%, #2b0b0b 0%, #000000 70%)'
+                    background: 'radial-gradient(circle at 50% 40%, var(--color-fundo-telas) 0%, var(--color-botao-escuro) 70%)'
                 }}
             />
             <header className="w-full max-w-[1200px] p-6 z-10 flex justify-start">
-                <h1 className="text-[#e50914] text-4xl font-bold tracking-tighter">
+                <h1 className="text-texto-logos text-4xl font-bold tracking-tighter">
                     NETFLIX
                 </h1>
             </header>
